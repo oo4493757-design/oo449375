@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>LocalDub – dub video in your browser</title>
+<meta name="theme-color" content="#0f1318">
+<link rel="stylesheet" href="css/styles.css"></head>
+<body>
+<header><h1>LocalDub</h1><p>Everything runs on this device. Nothing is uploaded.</p></header>
+<nav id="steps" aria-label="Steps"></nav>
+<main>
+<div id="stage" class="stage"><video id="v" playsinline controls></video></div>
+
+<section id="s0"><h2>Upload</h2>
+<label class="drop"><input id="file" type="file" accept="video/*,audio/*" hidden><span id="fileLabel">Choose a video or audio file</span></label>
+<p class="hint">Or continue a saved project: <label class="link"><input id="projIn" type="file" accept=".json,application/json" hidden>open project JSON</label>. Re-add the media file afterwards.</p></section>
+
+<section id="s1" hidden><h2>Transcribe</h2>
+<div class="row"><label>Model<select id="model"><option value="onnx-community/whisper-tiny">Tiny – fastest</option><option value="onnx-community/whisper-base" selected>Base – balanced</option><option value="onnx-community/whisper-small">Small – most accurate</option></select></label>
+<label>Spoken language<select id="srcSel"></select></label></div>
+<button id="goAsr" class="primary">Transcribe locally</button>
+<progress id="p1" hidden></progress><p id="m1" class="hint"></p><div id="list1" class="segs"></div></section>
+
+<section id="s2" hidden><h2>Translate</h2>
+<div class="row"><label>Translate into<select id="tgtSel"></select></label></div>
+<button id="goTr" class="primary">Translate locally</button>
+<progress id="p2" hidden></progress><p id="m2" class="hint"></p><div id="list2" class="segs"></div></section>
+
+<section id="s3" hidden><h2>Voices &amp; timing</h2>
+<div class="row"><label>Speakers to detect<input id="nSpk" type="number" min="1" max="6" value="2"></label><button id="detect">Detect speakers by pitch</button></div>
+<div id="spkBox"></div>
+<h3>Timing &amp; mix</h3>
+<div class="grid">
+<label>Max speed-up <b id="o_maxUp_v"></b><input data-o="maxUp" type="range" min="1" max="2.5" step=".05"></label>
+<label>Min gap (s) <b id="o_gap_v"></b><input data-o="gap" type="range" min="0" max="1" step=".05"></label>
+<label>Voice level <b id="o_vol_v"></b><input data-o="vol" type="range" min=".2" max="1" step=".05"></label>
+<label>Background level <b id="o_base_v"></b><input data-o="base" type="range" min="0" max="1" step=".05"></label>
+<label>Background while speaking <b id="o_duck_v"></b><input data-o="duck" type="range" min="0" max="1" step=".05"></label>
+<label>If speech runs long<select data-o="policy"><option value="hold">Pause video until it finishes</option><option value="drift">Let speech drift later</option></select></label></div>
+<p class="hint">Speech never overlaps. Original voices are lowered, not removed.</p>
+<button id="prev" class="primary">Preview dub</button> <button id="stopPrev">Stop</button>
+<div id="list3" class="segs"></div></section>
+
+<section id="s4" hidden><h2>Export</h2>
+<div class="btns"><button data-x="srcsrt">Original .srt</button><button data-x="trsrt">Translated .srt</button><button data-x="trvtt">Translated .vtt</button><button data-x="json">Project .json</button></div>
+<h3>Dubbed video</h3>
+<p class="hint" id="recHint"></p>
+<div class="btns"><button id="rec" class="primary">Record dubbed video</button><button id="full">Play fullscreen (phones: use screen recorder)</button></div>
+</section>
+</main>
+<footer><button id="back">Back</button><button id="next" class="primary">Next</button></footer>
+<script type="module" src="js/app.js"></script>
+</body></html>
